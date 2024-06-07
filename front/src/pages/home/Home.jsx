@@ -19,9 +19,7 @@ export default function Home() {
             <li>
               Our online library management system is a one-stop solution that covers all the essential functions of a modern library. From searching and borrowing books to managing inventory and sending reminders, our system ensures seamless operation and user experience for students.
             </li>
-            <li>
-              We prioritize ease of use, with an intuitive interface that allows users to navigate effortlessly. Whether you are a student searching for a book or a librarian managing inventory, our platform is designed to make your tasks straightforward and efficient.
-            </li>
+
             <li>
               Stay up-to-date with real-time updates on book availability and borrow status. Students can instantly know the status of their desired books, and librarians can efficiently manage returns and check-outs, reducing delays and improving service quality.
             </li>
@@ -29,9 +27,7 @@ export default function Home() {
             <li>
               Our system is designed to grow with your needs. Whether you are a small library or a large institution, our solution is fully customizable and scalable, allowing you to add new features or expand capacity as your requirements evolve.
             </li>
-            <li>
-              We offer dedicated customer support to help you with any issues or questions. Our team is committed to providing prompt and effective assistance, ensuring that your library management runs smoothly at all times.
-            </li>
+
             <li>
               By choosing our online library management system, you ensure that your library operates efficiently, users are satisfied, and administrative tasks are simplified. Experience the future of library management with our comprehensive, user-friendly, and secure solution.
             </li>
@@ -61,7 +57,7 @@ export default function Home() {
             title="Robots development"
             desc="There are many types of robots; they are used in many different environments and for many different uses. Although being very diverse in application and form."
           />
-       
+
         </div>
         <Link to="/books">See more</Link>
       </section>
