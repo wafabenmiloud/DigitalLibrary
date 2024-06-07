@@ -1,0 +1,30 @@
+footer{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    padding: 5%;
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.link{color: black;}
+.link:hover{text-decoration: underline;}
+.logoo img {
+  width: 200px;
+}
+/*===========media queries (medium devices : tablets)=======*/
+@media screen and (max-width:1024px) {
+  footer{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+}
+/*===========media queries (small devices : phones)=======*/
+@media screen and (max-width:600px) {
+  footer{
+    display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;    
+text-align: center;
+}
+}

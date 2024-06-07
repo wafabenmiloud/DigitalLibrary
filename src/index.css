@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400&display=swap');
+body {
+  margin: 0;
+  font-family: 'Tajawal', sans-serif;
+  color: var(--color-text);
+  line-height: 1.7;
+}
+html{
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar{
+  display: none;
+}
+*{
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
+}
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+:root{
+    
+
+  --color-secondary:#ECF0F1;
+  --color-primary:#2C3E50;
+  --color-accent:#1ABC9C;
+  --color-text:#34495E;
+  --color-secondary-text:#7F8C8D;
+
+
+}
+/*===========media queries (medium devices : tablets)=======*/
+@media screen and (max-width:1024px) {
+   
+}
+/*===========media queries (small devices : phones)=======*/
+@media screen and (max-width:600px) {
+   
+}
