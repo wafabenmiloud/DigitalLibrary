@@ -8,6 +8,8 @@ import SignUp from "./pages/signup/Signup";
 import Books from "./pages/books/Books";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
+import PrivateRoute from './PrivateRoute'
+import AuthRoute from './AuthRoute'
 
 function App() {
   return (
@@ -15,11 +17,43 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route exact path="/" element={<Home />} />
-        <Route exact path="SignIn" element={<SignIn />} />
-        <Route exact path="SignUp" element={<SignUp />} />
-        <Route exact path="books" element={<Books />} />
-        <Route exact path="dashboard" element={<Dashboard />} />
-        <Route exact path="admin" element={<AdminDashboard />} />
+        <Route 
+            exact 
+            path="SignIn" 
+            element={
+              <PrivateRoute>
+                <SignIn />
+              </PrivateRoute>
+            } 
+          />
+          <Route 
+            exact 
+            path="SignUp" 
+            element={
+              <PrivateRoute>
+                <SignUp />
+              </PrivateRoute>
+            } 
+          />
+       <Route 
+            exact 
+            path="books" 
+            element={
+              <AuthRoute>
+                <Books />
+              </AuthRoute>
+            }
+          />
+          <Route 
+            exact 
+            path="dashboard" 
+            element={
+              <AuthRoute>
+                <Dashboard />
+              </AuthRoute>
+            }
+          />
+          <Route exact path="admin" element={<AdminDashboard />} />
         <Route exact path="librarian" element={<LibrarianDashboard />} />
       </Routes>
     </BrowserRouter>

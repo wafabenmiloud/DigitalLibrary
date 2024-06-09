@@ -1,12 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';
 import './Signup.css';
 import { Link } from "react-router-dom";
 import img from "../../assets/form.jpg";
 import logo from "../../assets/logo.png";
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 export default function Signin() {
+  const navigate = useNavigate();
+
   const [user, setUser] = useState({
-  
+
     email: "",
     password: ""
   });
@@ -20,48 +24,68 @@ export default function Signin() {
       [name]: value
     }));
   }
-
   const handleSubmit = async e => {
     e.preventDefault();
-    const response = await fetch('http://your_server/signin.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: new URLSearchParams(user)
-    });
+    try {
+      const response = await axios.post('http://localhost/DigitalLibrary/back/login.php',
+        new URLSearchParams(user),
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        });
+      if (response.status === 200) {
+        const { token } = response.data;
+        console.log(token);
+        // Store the token in local storage
+        localStorage.setItem('token', token);
+        // Redirect to dashboard or perform any other action
+        navigate('/dashboard');
+      } else {
+        setMessage("An error occurred while submitting the form.");
+      }
+    } catch (error) {
+      if (error.response) {
 
-    const data = await response.json();
-    setMessage(data.message);
+        setMessage(error.response.data.error || "An error occurred while submitting the form.");
+      } else if (error.request) {
+
+        setMessage("No response received from the server.");
+      } else {
+
+        setMessage("An error occurred while submitting the form.");
+      }
+      console.error("There was an error!", error);
+    }
   }
-  return (
-    <div className='signup_page'>
-      <Link className="logooo" to="/">
-        <img src={logo} alt="" />
-      </Link>
-      <div className="form__wrapper">
-        <div className="form">
-          <h2>Welcome back !</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="form__element">
-              <h4>Email</h4>
-              <input type="email" name="email" id="email" value={user.email} onChange={handleChange} />
-            </div>
-            <div className="form__element">
-              <h4>Password</h4>
-              <input type="password" name="password" id="password" value={user.password} onChange={handleChange} />
-            </div>
-            
-            <button type="submit"><h4>Login</h4></button>
-          </form>
-          {message && <p>{message}</p>}
-          <Link id='link' to="/SignUp"> New here ?</Link>
-          <Link id='link' to="/"> Forgot password ?</Link>
-        </div>
-        <div className="form__img">
-          <img src={img} alt="img" />
-        </div>
+
+return (
+  <div className='signup_page'>
+    <Link className="logooo" to="/">
+      <img src={logo} alt="" />
+    </Link>
+    <div className="form__wrapper">
+      <div className="form">
+        <h2>Welcome back !</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="form__element">
+            <h4>Email</h4>
+            <input type="email" name="email" id="email" value={user.email} onChange={handleChange} />
+          </div>
+          <div className="form__element">
+            <h4>Password</h4>
+            <input type="password" name="password" id="password" value={user.password} onChange={handleChange} />
+          </div>
+
+          <button type="submit"><h4>Login</h4></button>
+        </form>
+        {message && <p style={{ color: "red" }}>{message}</p>}
+        <Link id='link' to="/SignUp"> New here ?</Link>
+      </div>
+      <div className="form__img">
+        <img src={img} alt="img" />
       </div>
     </div>
-  )
+  </div>
+)
 }

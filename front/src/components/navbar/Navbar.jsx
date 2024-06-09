@@ -1,16 +1,22 @@
 import React, { useRef } from "react";
 import './Navbar.css';
 import { AiFillHome, AiOutlineMenu } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
 import logo from "../../assets/logo.png"
 
 export default function Navbar() {
   const navRef = useRef();
+  const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+  const isLoggedIn = !!token;
   const showNavbar = () => {
     navRef.current.classList.toggle("responsive_nav");
   };
-
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/SignIn');
+  };
   return (
     <>
       <nav ref={navRef}>
@@ -31,15 +37,26 @@ export default function Navbar() {
                 About
               </Link>
             </li>
-            <li>
-              <Link className="navbar__link" to="/books">
-                Books
-              </Link>
-            </li>
-            <li><Link to="/SignIn" className="btn">
-              Login
-            </Link></li>
-
+            {isLoggedIn && (
+              <li>
+                <Link className="navbar__link" to="/books">
+                  Books
+                </Link>
+              </li>
+            )}
+            {!isLoggedIn ? (
+              <li>
+                <Link to="/SignIn" className="btn">
+                  Login
+                </Link>
+              </li>
+            ) : (
+              <li>
+                <button onClick={handleLogout} className="btn">
+                  Logout
+                </button>
+              </li>
+            )}
           </div>
           <button className="navbar__btn close" onClick={showNavbar}>
             <FaTimes />
@@ -50,7 +67,7 @@ export default function Navbar() {
         <Link className="logo" to="/">
           <img src={logo} alt="" />
         </Link>
-        <button className="navbar__btn open " onClick={showNavbar}>
+        <button className="navbar__btn open" onClick={showNavbar}>
           <AiOutlineMenu />
         </button>
       </div>

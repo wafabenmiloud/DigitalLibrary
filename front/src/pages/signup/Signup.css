@@ -56,6 +56,7 @@ button {
    color: white;
     background-color: var(--color-primary);
     padding: 10px 40px;
+    cursor: pointer;
 }
 /*===========media queries (medium devices : tablets)=======*/
 @media screen and (max-width:1440px) {

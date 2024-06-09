@@ -1,10 +1,14 @@
 import React, { useRef, useState, useEffect } from "react";
 import "./Header.css";
 import Navbar from "../navbar/Navbar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TrackVisibility from "react-on-screen";
 
 export default function Header() {
+  const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+  const isLoggedIn = !!token;
+
   const [loopNum, setLoopNum] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [text, setText] = useState("");
@@ -67,7 +71,7 @@ export default function Header() {
                 Your Digital Library, Reimagined. <br />
                 <span
                   className="txt-rotate"
-                  dataPeriod="100"
+                  dataperiod="100"
                   data-rotate={toRotate}
                 >
                   <span className="wrap">{text}</span>
@@ -78,9 +82,12 @@ export default function Header() {
             )}
           </TrackVisibility>
           <br /><br /><br />
-          <Link to="/SignUp" id="btn">
+          {
+            !isLoggedIn && (  <Link to="/SignUp" id="btn">
             Get started
-          </Link>
+          </Link>)
+          }
+        
         </h1>
 
       </div>
