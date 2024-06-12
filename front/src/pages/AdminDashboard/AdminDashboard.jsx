@@ -14,7 +14,7 @@ export default function AdminDashboard() {
         </li>
         <li> link to admin dashboard</li>
         <li>Admin Dashboard</li>
-        <li>Manage students (add, remove)</li>
+        <li>Manage users (add, remove)</li>
         <li>Manage librarian profiles (create, modify)</li>
       </ul>
 

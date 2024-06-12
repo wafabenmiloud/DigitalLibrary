@@ -27,7 +27,7 @@ try {
     $decoded = JWT::decode($jwt, new Key($secretKey, 'HS256'));
     $email = $decoded->email;
 
-    $sql = "SELECT card_num, username, email FROM students WHERE email = '$email'";
+    $sql = "SELECT card_num, username, email FROM users WHERE email = '$email'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {

@@ -19,7 +19,7 @@ export default function LibrarianDashboard() {
         </li>
         <li>List of overdue books
         </li>
-        <li>Send reminder messages to students
+        <li>Send reminder messages to users
         </li>
 
       </ul>

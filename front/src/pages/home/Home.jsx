@@ -17,11 +17,11 @@ export default function Home() {
         <div className="content">
           <ul className="about__text">
             <li>
-              Our online library management system is a one-stop solution that covers all the essential functions of a modern library. From searching and borrowing books to managing inventory and sending reminders, our system ensures seamless operation and user experience for students.
+              Our online library management system is a one-stop solution that covers all the essential functions of a modern library. From searching and borrowing books to managing inventory and sending reminders, our system ensures seamless operation and user experience for users.
             </li>
 
             <li>
-              Stay up-to-date with real-time updates on book availability and borrow status. Students can instantly know the status of their desired books, and librarians can efficiently manage returns and check-outs, reducing delays and improving service quality.
+              Stay up-to-date with real-time updates on book availability and borrow status. users can instantly know the status of their desired books, and librarians can efficiently manage returns and check-outs, reducing delays and improving service quality.
             </li>
 
             <li>

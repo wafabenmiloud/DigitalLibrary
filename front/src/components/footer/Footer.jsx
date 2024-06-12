@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 import logo from "../../assets/logo_dark.png"
 
 export default function footer() {
+  const token = localStorage.getItem('token');
+  const isLoggedIn = !!token;
+
   return (
     <footer>
       <div>
@@ -16,13 +19,17 @@ export default function footer() {
         <ul>
           <li> <Link className='link' to="/">Home</Link></li>
           <li> <Link className='link' to="/">About us</Link></li>
-          <li> <Link className='link' to="/books">Books</Link></li>
-          <li> <Link className='link' to="/dashboard">Dashboard</Link></li>
+          {
+            isLoggedIn && (<>
+              <li> <Link className='link' to="/books">Books</Link></li>
+              <li> <Link className='link' to="/dashboard">Dashboard</Link></li>
+            </>)
+          }
           <li> <Link className='link' to="/admin">Admin Dashboard</Link></li>
           <li> <Link className='link' to="/librarian">Librarian Dashboard</Link></li>
         </ul>
       </div>
-   
+
     </footer>
   )
 }

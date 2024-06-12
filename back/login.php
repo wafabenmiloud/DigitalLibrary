@@ -15,7 +15,7 @@ if (!isset($_POST['email'], $_POST['password'])) {
 $email = $_POST['email'];
 $password = $_POST['password'];
 
-$sql = "SELECT * FROM students WHERE email='$email'";
+$sql = "SELECT * FROM users WHERE email='$email'";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
