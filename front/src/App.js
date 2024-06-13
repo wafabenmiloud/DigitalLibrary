@@ -10,6 +10,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
 import PrivateRoute from './PrivateRoute'
 import AuthRoute from './AuthRoute'
+import Notifications from "./pages/Notifications/Notifications";
 
 function App() {
   return (
@@ -68,6 +69,15 @@ function App() {
             element={
               <AuthRoute>
                 <LibrarianDashboard />
+              </AuthRoute>
+            }
+          />
+          <Route
+            exact
+            path="notif"
+            element={
+              <AuthRoute>
+                <Notifications />
               </AuthRoute>
             }
           />

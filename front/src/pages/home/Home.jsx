@@ -3,13 +3,42 @@ import "./Home.css";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import about from "../../assets/about.jpg";
-import img1 from "../../assets/1.jpg";
-import img2 from "../../assets/2.jpg";
-import img3 from "../../assets/3.jpg";
 import Card from "../books/Card";
-import { Link } from "react-router-dom";
+
 
 export default function Home() {
+  const token = localStorage.getItem('token');
+  const isLoggedIn = !!token;
+
+  const popBooks = [
+    {
+      "ID_livre": "1",
+      "titre": "Le Petit Prince",
+      "auteur": "Antoine de Saint-Exupéry",
+      "ISBN": "978-0156012195",
+      "theme": "Fiction",
+      "estDisponible": true,
+      "description": "A dystopian social science fiction novel and cautionary tale, written by the English writer Aldous Huxley."
+    },
+    {
+      "ID_livre": "2",
+      "titre": "1984",
+      "auteur": "George Orwell",
+      "ISBN": "978-0451524935",
+      "theme": "Dystopian",
+      "estDisponible": true,
+      "description": "A dystopian social science fiction novel and cautionary tale, written by the English writer Aldous Huxley."
+    },
+    {
+      "ID_livre": "3",
+      "titre": "The Great Gatsby",
+      "auteur": "F. Scott Fitzgerald",
+      "ISBN": "978-0743273565",
+      "theme": "Classic",
+      "estDisponible": true,
+      "description": "A dystopian social science fiction novel and cautionary tale, written by the English writer Aldous Huxley."
+    },
+  ]
   return (
     <>
       <Header />
@@ -38,14 +67,26 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section id="Books">
+      {isLoggedIn && (<section id="Books">
         <h4>Books</h4>
         <h1>Popular Books</h1>
         <div id="cards__wrapper">
-         
 
+          {popBooks.map((book, index) => (
+            <Card
+              key={index}
+              ID_livre={book.ID_livre}
+              titre={book.titre}
+              auteur={book.auteur}
+              ISBN={book.ISBN}
+              theme={book.theme}
+              estDisponible={book.estDisponible}
+              description={book.description}
+            />
+          ))}
         </div>
-      </section>
+      </section>)}
+
       <Footer />
     </>
   );

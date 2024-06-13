@@ -19,7 +19,7 @@ export default function Navbar() {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    navigate('/SignIn');
+    navigate('/');
   };
 
   function Avatar(props) {
@@ -95,7 +95,7 @@ export default function Navbar() {
                   </Link>
                 </li>
                 <li>
-                  <Link className="navbar__link" to="/notifications">
+                  <Link className="navbar__link" to="/notif">
                     Notifications
                   </Link>
                 </li>

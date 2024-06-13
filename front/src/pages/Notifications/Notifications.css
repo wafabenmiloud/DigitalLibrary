@@ -1,0 +1,36 @@
+/* src/Notifications.css */
+.notifications-container {
+    width: 70%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 0;
+  }
+  
+  .notification {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .notification p {
+    margin: 0;
+  }
+  
+  .notification button {
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
