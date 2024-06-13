@@ -41,8 +41,8 @@ if ($password !== $passwordConfirm) {
 }
 
 $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-
-$sql = "INSERT INTO users (card_num, username, email, password, role) VALUES ('$cardNumber', '$name', '$email', '$hashedPassword', 'student')";
+$role = "student";
+$sql = "INSERT INTO users (card_num, username, email, password, role) VALUES ('$cardNumber', '$name', '$email', '$hashedPassword', '$role')";
 
 if ($conn->query($sql) === TRUE) {
     echo json_encode(["message" => "New record created successfully"]);

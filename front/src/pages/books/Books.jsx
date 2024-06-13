@@ -1,89 +1,178 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Books.css';
 import Footer from "../../components/footer/Footer"
 import Navbar from '../../components/navbar/Navbar';
 import Card from './Card';
-import img1 from "../../assets/1.jpg";
-import img2 from "../../assets/2.jpg";
-import img3 from "../../assets/3.jpg";
-import img4 from "../../assets/4.jpg";
-import img5 from "../../assets/5.jpg";
-import img6 from "../../assets/6.jpg";
-import img7 from "../../assets/7.jpg";
-import img8 from "../../assets/8.jpg";
-import img9 from "../../assets/9.jpg";
+
+const SearchBar = ({ searchQuery, setSearchQuery, theme, setTheme, themes }) => {
+  return (
+    <div className="search-bar">
+      <input
+        type="text"
+        placeholder="Enter title or author ..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+      <select value={theme} onChange={(e) => setTheme(e.target.value)}>
+        <option value="">All Themes</option>
+        {themes.map((theme, index) => (
+          <option key={index} value={theme}>
+            {theme}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};
 export default function Books() {
+  const books = [
+    {
+      "ID_livre": "1",
+      "titre": "Le Petit Prince",
+      "auteur": "Antoine de Saint-Exupéry",
+      "ISBN": "978-0156012195",
+      "theme": "Fiction",
+      "estDisponible": true,
+      "description": "A dystopian social science fiction novel and cautionary tale, written by the English writer Aldous Huxley."
+    },
+    {
+      "ID_livre": "2",
+      "titre": "1984",
+      "auteur": "George Orwell",
+      "ISBN": "978-0451524935",
+      "theme": "Dystopian",
+      "estDisponible": true,
+      "description": "A dystopian social science fiction novel and cautionary tale, written by the English writer Aldous Huxley."
+    },
+    {
+      "ID_livre": "3",
+      "titre": "To Kill a Mockingbird",
+      "auteur": "Harper Lee",
+      "ISBN": "978-0061120084",
+      "theme": "Classic",
+      "estDisponible": false,
+      "description": "A dystopian social science fiction novel and cautionary tale, written by the English writer Aldous Huxley."
+    },
+    {
+      "ID_livre": "4",
+      "titre": "The Great Gatsby",
+      "auteur": "F. Scott Fitzgerald",
+      "ISBN": "978-0743273565",
+      "theme": "Classic",
+      "estDisponible": true,
+      "description": "A dystopian social science fiction novel and cautionary tale, written by the English writer Aldous Huxley."
+    },
+    {
+      "ID_livre": "5",
+      "titre": "Moby Dick",
+      "auteur": "Herman Melville",
+      "ISBN": "978-1503280786",
+      "theme": "Adventure",
+      "estDisponible": true,
+      "description": "A dystopian social science fiction novel and cautionary tale, written by the English writer Aldous Huxley."
+    }
+    ,
+    {
+      "ID_livre": "6",
+      "titre": "War and Peace",
+      "auteur": "Leo Tolstoy",
+      "ISBN": "978-1420958611",
+      "theme": "Historical",
+      "estDisponible": true,
+      "description": "A dystopian social science fiction novel and cautionary tale, written by the English writer Aldous Huxley."
+    }
+    , {
+      "ID_livre": "7",
+      "titre": "Pride and Prejudice",
+      "auteur": "Jane Austen",
+      "ISBN": "978-1503290563",
+      "theme": "Romance",
+      "estDisponible": false,
+      "description": "A dystopian social science fiction novel and cautionary tale, written by the English writer Aldous Huxley."
+    }
+    ,
+    {
+      "ID_livre": "8",
+      "titre": "The Catcher in the Rye",
+      "auteur": "J.D. Salinger",
+      "ISBN": "978-0316769488",
+      "theme": "Classic",
+      "estDisponible": true,
+      "description": "A dystopian social science fiction novel and cautionary tale, written by the English writer Aldous Huxley."
+    }, {
+      "ID_livre": "9",
+      "titre": "The Hobbit",
+      "auteur": "J.R.R. Tolkien",
+      "ISBN": "978-0547928227",
+      "theme": "Fantasy",
+      "estDisponible": false,
+      "description": "A dystopian social science fiction novel and cautionary tale, written by the English writer Aldous Huxley."
+    }
+    , {
+      "ID_livre": "10",
+      "titre": "Fahrenheit 451",
+      "auteur": "Ray Bradbury",
+      "ISBN": "978-1451673319",
+      "theme": "Dystopian",
+      "estDisponible": true,
+      "description": "A dystopian social science fiction novel and cautionary tale, written by the English writer Aldous Huxley."
+    }
+    ,
+    {
+      "ID_livre": "11",
+      "titre": "Brave New World",
+      "auteur": "Aldous Huxley",
+      "ISBN": "978-0060850524",
+      "theme": "Dystopian",
+      "estDisponible": true,
+      "description": "A dystopian social science fiction novel and cautionary tale, written by the English writer Aldous Huxley."
+    }
+
+  ]
+  const [searchQuery, setSearchQuery] = useState('');
+  const [theme, setTheme] = useState('');
+  const themes = [...new Set(books.map((book) => book.theme))];
+
+  const filteredBooks = books.filter((book) => {
+    const matchesSearchQuery =
+      book.titre.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      book.auteur.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesTheme = theme ? book.theme === theme : true;
+    return matchesSearchQuery && matchesTheme;
+  });
   return (
     <>
       <Navbar />
 
-
-      <h1 id='titre'>Books</h1> <ul style={{ textAlign: "center", margin: "50px 0" }}>
-        <li>      Search bar
-        </li>
-        <li>Filters (by theme, reference)
-          <li>Book Details Page
-
-            
-            
-            
+      <ul style={{ textAlign: "center", margin: "50px 0" }}>
+        <li>Book Details Page *
           </li>
-          <li>Book title
-          </li>
-          <li>Author</li>
-          <li>Description</li>
-          <li>Availability status</li>
-          <li>Borrow button</li>
-        </li>
 
       </ul>
+      <h1 id='titre'>Books</h1> 
+
+      <SearchBar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        theme={theme}
+        setTheme={setTheme}
+        themes={themes}
+      />
+      
+     
       <div id="cards__wrapper">
-        <Card
-          img={img1}
-          fee="Web Development"
-          title="Website Design"
-          desc="Web development is the building and maintenance of websites; it's the work that happens behind the scenes to make a website 
-            look great, work fast and perform well with a seamless user experience."
-        />
-        <Card img={img2} fee="Android"
-          title="Mobile app development"
-          desc=" Mobile app development is the act or process by which a mobile app is developed for mobile devices, such as personal digital assistants,
-           enterprise digital assistants or mobile phones."
-        />
-        <Card img={img3} fee="Robotics"
-          title="Robots development"
-          desc="There are many types of robots; they are used in many different environments and for many different uses. Although being very diverse in application and form."
-        />
-        <Card img={img4} fee="PSocs"
-          title="Programmable System on chip"
-          desc="PSoC is a family of microcontroller integrated circuits by Cypress Semiconductor. These chips include a CPU core and mixed-signal arrays of configurable integrated analog and digital peripherals."
-        />
-        <Card
-          img={img5}
-          fee="VHDL"
-          title="Hardware Description Language"
-          desc="The VHSIC Hardware Description Language (VHDL) is a hardware description language (HDL) that can model the behavior and structure of digital systems"
-
-        />
-        <Card img={img6} fee="CyberSecurity"
-          title="Protect your website from cyber attacks"
-          desc="Cybersecurity is the protection of internet-connected systems such as hardware, software and data from cyberthreats. The practice is used by individuals and enterprises to protect against unauthorized access to data centers and other computerized systems."
-        />
-        <Card
-          img={img7}
-          fee="Python"
-          title="Programming language"
-          desc="Python is an interpreted high-level general-purpose programming language.            "
-
-        />
-        <Card img={img8} fee="English"
-          title="Improve your listening skills"
-          desc=" It is a fact that no matter what age one is, that learning a second language improves brain functionality. Every single brain changes with age, but case studies executed show results that people who know more than one language have a longer attention span and perform better on attention tests."
-        />
-        <Card img={img9} fee="Mathematics"
-          title="Probability"
-          desc="Probability is the branch of mathematics concerning numerical descriptions of how likely an event is to occur, or how likely it is that a proposition is true. The probability of an event is a number between 0 and 1, where, roughly speaking, 0 indicates impossibility of the event and 1 indicates certainty"
-        />
+        {filteredBooks.map((book, index) => (
+          <Card
+            key={index}
+            ID_livre={book.ID_livre}
+            titre={book.titre}
+            auteur={book.auteur}
+            ISBN={book.ISBN}
+            theme={book.theme}
+            estDisponible={book.estDisponible}
+            description={book.description}
+          />
+        ))}
       </div>
       <Footer />
     </>

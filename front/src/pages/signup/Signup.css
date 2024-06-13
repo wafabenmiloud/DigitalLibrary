@@ -12,8 +12,9 @@
     align-items: center;
     width: 60%;
     margin: 3% auto;
-
-    background-color: var(--color-secondary);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
 }
 .form{
     display: flex;
@@ -25,13 +26,14 @@
 
 }
 form{
-    width: 90%;
+    width: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 20px;
     height: 60%;
+    margin: auto;
 
 }
 .form__img img{
@@ -44,13 +46,12 @@ padding-top: 0%;
 }
 .form__element{
     width: 100%;
-
-
 }
 .form__element input{
-    border: 1px solid var(--color-primary);
+    padding: 12px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     width: 100%;
-    padding: 10px;
 }
 button {
    color: white;

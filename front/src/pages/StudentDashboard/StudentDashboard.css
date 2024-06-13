@@ -1,0 +1,113 @@
+/* Dashboard.css */
+body {
+    background-color: #f0f2f5;
+    color: var(--color-text);
+}
+
+.dashboard {
+    padding: 20px;
+    width: 82%;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 2.5fr;
+    gap: 10px;
+}
+
+.user-info,
+.change-password,
+.borrowed-books {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+    gap: 10px;
+}
+
+.user-info h2,
+.change-password h3,
+.borrowed-books h3 {
+    color: var(--color-accent);
+}
+
+.change-password form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    gap: 15px;
+    width: 100%;
+
+}
+
+.change-password label {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.change-password input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.change-password button {
+    align-self: center;
+    width: 100%;
+    background-color: #fff;
+    color: var(--color-accent);
+    border: 1px solid var(--color-accent);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+    font-size: 14px;
+    padding: 8px 0;
+}
+
+.change-password button:hover {
+    background-color: var(--color-accent);
+    color: #fff;
+}
+
+.message {
+    margin-top: 10px;
+    color: #d9534f;
+}
+
+.borrowed-books ul {
+    list-style: none;
+    padding: 0;
+}
+
+.borrowed-books li {
+    margin-bottom: 15px;
+}
+
+.book-card {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.book-card h4 {
+    margin: 0;
+    margin-bottom: 10px;
+    color: #343a40;
+}
+
+.book-card p {
+    margin: 0;
+    color: #6c757d;
+}

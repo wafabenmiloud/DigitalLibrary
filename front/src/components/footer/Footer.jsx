@@ -25,8 +25,6 @@ export default function footer() {
               <li> <Link className='link' to="/dashboard">Dashboard</Link></li>
             </>)
           }
-          <li> <Link className='link' to="/admin">Admin Dashboard</Link></li>
-          <li> <Link className='link' to="/librarian">Librarian Dashboard</Link></li>
         </ul>
       </div>
 

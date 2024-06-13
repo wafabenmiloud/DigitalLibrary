@@ -14,50 +14,66 @@ import AuthRoute from './AuthRoute'
 function App() {
   return (
     <>
-    <BrowserRouter>
-      <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route 
-            exact 
-            path="SignIn" 
+      <BrowserRouter>
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route
+            exact
+            path="SignIn"
             element={
               <PrivateRoute>
                 <SignIn />
               </PrivateRoute>
-            } 
+            }
           />
-          <Route 
-            exact 
-            path="SignUp" 
+          <Route
+            exact
+            path="SignUp"
             element={
               <PrivateRoute>
                 <SignUp />
               </PrivateRoute>
-            } 
+            }
           />
-       <Route 
-            exact 
-            path="books" 
+          <Route
+            exact
+            path="books"
             element={
               <AuthRoute>
                 <Books />
               </AuthRoute>
             }
           />
-          <Route 
-            exact 
-            path="dashboard" 
+          <Route
+            exact
+            path="dashboard"
             element={
               <AuthRoute>
                 <Dashboard />
               </AuthRoute>
             }
           />
-          <Route exact path="admin" element={<AdminDashboard />} />
-        <Route exact path="librarian" element={<LibrarianDashboard />} />
-      </Routes>
-    </BrowserRouter>
-  </>
+          <Route
+            exact
+            path="admin_dash"
+            element={
+              <AuthRoute>
+                <AdminDashboard />
+              </AuthRoute>
+            }
+          />
+          <Route
+            exact
+            path="librarian_dash"
+            element={
+              <AuthRoute>
+                <LibrarianDashboard />
+              </AuthRoute>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 

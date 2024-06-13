@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Signup.css';
 import { Link } from "react-router-dom";
-import img from "../../assets/form.jpg";
+import img from "../../assets/form2.jpg";
 import logo from "../../assets/logo.png";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
@@ -36,10 +36,10 @@ export default function Signin() {
         });
       if (response.status === 200) {
         const { token } = response.data;
-        console.log(token);
         // Store the token in local storage
         localStorage.setItem('token', token);
         // Redirect to dashboard or perform any other action
+        
         navigate('/dashboard');
       } else {
         setMessage("An error occurred while submitting the form.");

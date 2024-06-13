@@ -8,6 +8,7 @@ import img2 from "../../assets/2.jpg";
 import img3 from "../../assets/3.jpg";
 import Card from "../books/Card";
 import { Link } from "react-router-dom";
+
 export default function Home() {
   return (
     <>
@@ -41,25 +42,9 @@ export default function Home() {
         <h4>Books</h4>
         <h1>Popular Books</h1>
         <div id="cards__wrapper">
-          <Card
-            img={img1}
-            fee="Web Development"
-            title="Website Design"
-            desc="Web development is the building and maintenance of websites; it's the work that happens behind the scenes to make a website 
-            look great, work fast and perform well with a seamless user experience."
-          />
-          <Card img={img2} fee="Android"
-            title="Mobile app development"
-            desc=" Mobile app development is the act or process by which a mobile app is developed for mobile devices, such as personal digital assistants,
-           enterprise digital assistants or mobile phones."
-          />
-          <Card img={img3} fee="Robotics"
-            title="Robots development"
-            desc="There are many types of robots; they are used in many different environments and for many different uses. Although being very diverse in application and form."
-          />
+         
 
         </div>
-        <Link to="/books">See more</Link>
       </section>
       <Footer />
     </>

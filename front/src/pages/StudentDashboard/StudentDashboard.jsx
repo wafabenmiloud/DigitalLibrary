@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from "../../components/navbar/Navbar";
-import Footer from "../../components/footer/Footer";
-import StudentDashboard from "../StudentDashboard/StudentDashboard";
 import axios from 'axios';
-import './Dashboard.css';
-import AdminDashboard from '../AdminDashboard/AdminDashboard';
-import LibrarianDashboard from '../LibrarianDashboard/LibrarianDashboard';
+import './StudentDashboard.css';
 
-const Dashboard = () => {
-    const [userData, setUserData] = useState(null);
+const StudentDashboard = ({ userData }) => {
     const books = [
         {
             "ID_livre": "1",
@@ -144,31 +138,11 @@ const Dashboard = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!token) {
-            navigate('/signin');
+        if (token) {
+            setLoading(false)
             return;
         }
-
-        axios.get('http://localhost/DigitalLibrary/back/userData.php', {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-            .then(response => {
-                setUserData(response.data);
-            })
-            .catch(error => {
-                console.error("There was an error!", error);
-                if (error.response && error.response.status === 401) {
-                    alert("Your session has expired. Please log in again.");
-                    localStorage.removeItem('token');
-                    navigate('/login');
-                }
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    }, [token, navigate]);
+    }, []);
 
     const handleChangePassword = (e) => {
         e.preventDefault();
@@ -199,22 +173,83 @@ const Dashboard = () => {
                 }
             });
     };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        switch (name) {
+            case 'oldPassword':
+                setOldPassword(value);
+                break;
+            case 'newPassword':
+                setNewPassword(value);
+                break;
+            case 'confirmPassword':
+                setConfirmPassword(value);
+                break;
+            default:
+                break;
+        }
+    };
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+
     return (
         <>
-            <Navbar />
-            {
-                userData && userData.role === 'student' && (<StudentDashboard userData={userData} />)
-            }
-            {
-                userData && userData.role === 'admin' && (<AdminDashboard userData={userData} />)
-            }
-            {
-                userData && userData.role === 'librarian' && (<LibrarianDashboard userData={userData} />)
-            }
+            <div className="dashboard">
+                <div style={{ gap: "10px", display: "flex", flexDirection: "column" }}>
+                    {userData ? (
+                        <div className="user-info">
+                            <h2>Welcome, {userData.username}!</h2>
+                            <p><strong>Email:</strong> {userData.email}</p>
+                            <p><strong>Student Card:</strong> {userData.card_num}</p>
+                            <p><strong>Role:</strong> {userData.role}</p>
+                        </div>
+                    ) : (
+                        <div className="user-info">
+                            <p>Loading...</p>
+                        </div>
+                    )}
+                    <div className="change-password">
+                        <h3>Change Password</h3>
+                        <form onSubmit={handleChangePassword}>
+                            <label>
+                                Old Password:
+                                <input type="password" name="oldPassword" value={oldPassword} onChange={handleChange} required />
+                            </label>
+                            <label>
+                                New Password:
+                                <input type="password" name="newPassword" value={newPassword} onChange={handleChange} required />
+                            </label>
+                            <label>
+                                Confirm Password:
+                                <input type="password" name="confirmPassword" value={confirmPassword} onChange={handleChange} required />
+                            </label>
+                            <button type="submit">Change Password</button>
+                        </form>
+                        {message && <p className="message">{message}</p>}
+                    </div>
+                </div>
+                <div className="borrowed-books">
+                    <h3>Borrowed Books</h3>
+                    <ul>
+                        {borrowedBooks.map(book => (
+                            <li key={book.ID_livre}>
+                                <div className="book-card">
+                                    <h4>{book.titre}</h4>
+                                    <p>by {book.auteur}</p>
+                                    <p>Theme: {book.theme}</p>
+                                    <p>Due Date: ...</p>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
 
-            <Footer />
+            </div>
         </>
     );
 };
 
-export default Dashboard;
+export default StudentDashboard;

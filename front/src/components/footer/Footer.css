@@ -6,7 +6,7 @@ footer{
     color: white;
 }
 
-.link{color: black;}
+.link{color: white;}
 .link:hover{text-decoration: underline;}
 .logoo img {
   width: 200px;

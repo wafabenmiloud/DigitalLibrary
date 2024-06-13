@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Signup.css';
 import { Link } from "react-router-dom";
-import img from "../../assets/form.jpg";
+import img from "../../assets/form2.jpg";
 import logo from "../../assets/logo.png";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";

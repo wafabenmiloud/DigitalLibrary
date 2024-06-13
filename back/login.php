@@ -30,7 +30,7 @@ if ($result->num_rows > 0) {
             "iat" => time(),
             "exp" => time() + (60 * 60) // 1 hour expiration
         );
-        $secretKey = "691fd222cc84f449745a9e72cbc00fea99f69b2bf69356a2e08a3531c1eb5f08"; // Change this to your actual secret key
+        $secretKey = "691fd222cc84f449745a9e72cbc00fea99f69b2bf69356a2e08a3531c1eb5f08"; 
         $token = JWT::encode($token_payload, $secretKey, 'HS256');
         echo json_encode(["message" => "Login successful", "token" => $token]);
     } else {
