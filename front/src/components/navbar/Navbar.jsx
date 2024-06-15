@@ -53,7 +53,7 @@ export default function Navbar() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      axios.get('http://localhost/DigitalLibrary/back/userData.php', {
+      axios.get('http://localhost/DigitalLibrary/back/user/userData.php', {
         headers: {
           Authorization: `Bearer ${token}`
         }

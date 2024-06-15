@@ -1,7 +1,7 @@
 <?php
 
-include './config/db.php';
-include './config/request_config.php';
+include '../config/db.php';
+include '../config/request_config.php';
 
 // Check if all required fields are present
 if (!isset($_POST['cardNumber'], $_POST['name'], $_POST['email'], $_POST['password'], $_POST['passwordConfirm'])) {

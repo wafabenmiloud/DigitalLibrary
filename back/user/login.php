@@ -1,8 +1,8 @@
 <?php
 
-require 'vendor/autoload.php';
-include './config/db.php';
-include './config/request_config.php';
+require '../vendor/autoload.php';
+include '../config/db.php';
+include '../config/request_config.php';
 use \Firebase\JWT\JWT;
 
 // Check if all required fields are present

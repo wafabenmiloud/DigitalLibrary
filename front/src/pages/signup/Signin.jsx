@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 
 export default function Signin() {
   const navigate = useNavigate();
-
   const [user, setUser] = useState({
 
     email: "",
@@ -27,7 +26,7 @@ export default function Signin() {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost/DigitalLibrary/back/login.php',
+      const response = await axios.post('http://localhost/DigitalLibrary/back/user/login.php',
         new URLSearchParams(user),
         {
           headers: {
@@ -36,10 +35,7 @@ export default function Signin() {
         });
       if (response.status === 200) {
         const { token } = response.data;
-        // Store the token in local storage
-        localStorage.setItem('token', token);
-        // Redirect to dashboard or perform any other action
-        
+        localStorage.setItem('token', token);        
         navigate('/dashboard');
       } else {
         setMessage("An error occurred while submitting the form.");

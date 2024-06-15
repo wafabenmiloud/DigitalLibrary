@@ -54,24 +54,7 @@ function App() {
               </AuthRoute>
             }
           />
-          <Route
-            exact
-            path="admin_dash"
-            element={
-              <AuthRoute>
-                <AdminDashboard />
-              </AuthRoute>
-            }
-          />
-          <Route
-            exact
-            path="librarian_dash"
-            element={
-              <AuthRoute>
-                <LibrarianDashboard />
-              </AuthRoute>
-            }
-          />
+        
           <Route
             exact
             path="notif"

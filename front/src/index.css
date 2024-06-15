@@ -36,6 +36,7 @@ code {
 
 
 }
+button, a{cursor: pointer;}
 /*===========media queries (medium devices : tablets)=======*/
 @media screen and (max-width:1024px) {
    

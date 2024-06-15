@@ -30,7 +30,7 @@ export default function Signup() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'http://localhost/DigitalLibrary/back/signup.php',
+        'http://localhost/DigitalLibrary/back/student/signup.php',
         new URLSearchParams(user), {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -67,7 +67,7 @@ export default function Signup() {
       </Link>
       <div className="form__wrapper">
         <div className="form">
-          <h2>Create an account</h2>
+          <h2> Are you a new student ? <br /> Create an account now</h2>
           <form onSubmit={handleSubmit}>
             <div className="form__element">
               <h4>Student card number</h4>

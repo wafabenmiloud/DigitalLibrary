@@ -1,7 +1,7 @@
 <?php
-require 'vendor/autoload.php';
-include './config/db.php';
-include './config/request_config.php';
+require '../vendor/autoload.php';
+include '../config/db.php';
+include '../config/request_config.php';
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\Key;
 
