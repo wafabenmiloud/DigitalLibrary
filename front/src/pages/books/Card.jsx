@@ -1,16 +1,24 @@
 import React from 'react';
 import './Books.css';
+import { MdClose } from 'react-icons/md';
 
-export default function Card({ ID_livre, titre, auteur, ISBN, theme, estDisponible, description }) {
+
+
+const Card = ({ book, onDelete }) => {
   return (
-    <div className='card'>
-      <h2>{titre}</h2>
-      <p><strong>Author:</strong> {auteur}</p>
-      <p><strong>ISBN:</strong> {ISBN}</p>
-      <p><strong>Theme:</strong> {theme}</p>
-      <p><strong>Available:</strong> {estDisponible ? 'Yes' : 'No'}</p>
-      <p><strong>Description:</strong> {description}</p>
-      <button disabled={!estDisponible}>Borrow book</button>
+    <div className="book-card">
+      <h4>{book.titre}</h4>
+      <p><strong>by</strong> {book.auteur}</p>
+      <p><strong>ISBN/</strong> {book.ISBN}</p>
+      <p><strong>Theme:</strong> {book.theme}</p>
+      <p><strong>Availability:</strong> {book.estDisponible ? 'Yes' : 'No'}</p>
+      <MdClose
+        size={20}
+        onClick={() => onDelete(book.ID_livre)}
+        className="delete-icon"
+      />
     </div>
   );
-}
+};
+
+export default Card;

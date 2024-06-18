@@ -43,53 +43,28 @@ try {
     $stmt->fetch();
     $stmt->close();
 
-    if ($role !== 'admin') {
+    if ($role !== 'librarian') {
         http_response_code(403); // Forbidden
         echo json_encode(["error" => "Access denied"]);
         exit();
-    } }catch (Exception $e) {
+    }
+} catch (Exception $e) {
     http_response_code(401); // Unauthorized
     echo json_encode(["error" => "Invalid token"]);
     exit();
 }
 
-if (!isset($_POST['username'], $_POST['email'], $_POST['password'], $_POST['confirmPassword'])) {
+if (!isset($_POST['titre'], $_POST['auteur'], $_POST['ISBN'], $_POST['theme'])) {
     http_response_code(400); // Bad request
     echo json_encode(["error" => "All fields are required"]);
     exit();
 }
-$username = $_POST['username'];
-$email = $_POST['email'];
-$password = $_POST['password'];
-$confirmPassword = $_POST['confirmPassword'];
-
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    http_response_code(400); // Bad request
-    echo json_encode(["error" => "Invalid email format"]);
-    exit();
-}
-
-// Validate password
-if (strlen($password) < 8 ||
-    !preg_match('/[A-Z]/', $password) ||
-    !preg_match('/[0-9]/', $password) ||
-    !preg_match('/[!@#$%^&*(),.?":{}|<>]/', $password)) {
-        http_response_code(400); // Bad request
-
-    echo json_encode(["error" => "Password must be at least 8 characters long and contain at least one uppercase letter, one number, and one special character"]);
-    exit();
-}
-
-// Check if passwords match
-if ($password !== $confirmPassword) {
-    http_response_code(400); // Bad request
-    echo json_encode(["error" => "Passwords do not match"]);
-    exit();
-}
-
-$hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-$role = "librarian";
-$sql = "INSERT INTO users (username, email, password, role) VALUES ('$username', '$email', '$hashedPassword', '$role')";
+$title = $_POST['titre'];
+$author = $_POST['auteur'];
+$refe = $_POST['ISBN'];
+$theme = $_POST['theme'];
+$estDispo = true;
+$sql = "INSERT INTO books (titre, auteur, ISBN, theme, estDisponible) VALUES ('$title', '$author', '$refe', '$theme', $estDispo)";
 
 if ($conn->query($sql) === TRUE) {
     echo json_encode(["message" => "New record created successfully"]);
@@ -101,5 +76,5 @@ $conn->close();
 
 // Set the content type to JSON
 header('Content-Type: application/json');
-echo json_encode($users);
+echo json_encode($books);
 ?>
