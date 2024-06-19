@@ -1,44 +1,53 @@
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 import "./Home.css";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import about from "../../assets/about.jpg";
-import Card from "../books/Card";
+import AuthContext from "../../context/AuthContext";
 
 
 export default function Home() {
-  const token = localStorage.getItem('token');
-  const isLoggedIn = !!token;
+  const token = localStorage.getItem("token");
+  const [books, setBooks] = useState([]);
+  const navigate = useNavigate();
+  const { loggedIn, userData } = useContext(AuthContext);
 
-  const popBooks = [
-    {
-      "ID_livre": "1",
-      "titre": "Le Petit Prince",
-      "auteur": "Antoine de Saint-Exupéry",
-      "ISBN": "978-0156012195",
-      "theme": "Fiction",
-      "estDisponible": true,
-      "description": "A dystopian social science fiction novel and cautionary tale, written by the English writer Aldous Huxley."
-    },
-    {
-      "ID_livre": "2",
-      "titre": "1984",
-      "auteur": "George Orwell",
-      "ISBN": "978-0451524935",
-      "theme": "Dystopian",
-      "estDisponible": true,
-      "description": "A dystopian social science fiction novel and cautionary tale, written by the English writer Aldous Huxley."
-    },
-    {
-      "ID_livre": "3",
-      "titre": "The Great Gatsby",
-      "auteur": "F. Scott Fitzgerald",
-      "ISBN": "978-0743273565",
-      "theme": "Classic",
-      "estDisponible": true,
-      "description": "A dystopian social science fiction novel and cautionary tale, written by the English writer Aldous Huxley."
-    },
-  ]
+
+  function getRandomRecords(array, numRecords) {
+    const arrayCopy = array.slice();
+    for (let i = arrayCopy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arrayCopy[i], arrayCopy[j]] = [arrayCopy[j], arrayCopy[i]];
+    }
+    return arrayCopy.slice(0, numRecords);
+  }
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/SignIn");
+      return;
+    }
+   
+    const fetchBooks = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost/DigitalLibrary/back/user/getBooks.php",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        const popBooks = getRandomRecords(response.data, 3);
+        setBooks(popBooks);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchBooks();
+  }, [token, navigate]);
   return (
     <>
       <Header />
@@ -47,19 +56,33 @@ export default function Home() {
         <div className="content">
           <ul className="about__text">
             <li>
-              Our online library management system is a one-stop solution that covers all the essential functions of a modern library. From searching and borrowing books to managing inventory and sending reminders, our system ensures seamless operation and user experience for users.
+              Our online library management system is a one-stop solution that
+              covers all the essential functions of a modern library. From
+              searching and borrowing books to managing inventory and sending
+              reminders, our system ensures seamless operation and user
+              experience for users.
             </li>
 
             <li>
-              Stay up-to-date with real-time updates on book availability and borrow status. users can instantly know the status of their desired books, and librarians can efficiently manage returns and check-outs, reducing delays and improving service quality.
+              Stay up-to-date with real-time updates on book availability and
+              borrow status. users can instantly know the status of their
+              desired books, and librarians can efficiently manage returns and
+              check-outs, reducing delays and improving service quality.
             </li>
 
             <li>
-              Our system is designed to grow with your needs. Whether you are a small library or a large institution, our solution is fully customizable and scalable, allowing you to add new features or expand capacity as your requirements evolve.
+              Our system is designed to grow with your needs. Whether you are a
+              small library or a large institution, our solution is fully
+              customizable and scalable, allowing you to add new features or
+              expand capacity as your requirements evolve.
             </li>
 
             <li>
-              By choosing our online library management system, you ensure that your library operates efficiently, users are satisfied, and administrative tasks are simplified. Experience the future of library management with our comprehensive, user-friendly, and secure solution.
+              By choosing our online library management system, you ensure that
+              your library operates efficiently, users are satisfied, and
+              administrative tasks are simplified. Experience the future of
+              library management with our comprehensive, user-friendly, and
+              secure solution.
             </li>
           </ul>
           <div className="about__img">
@@ -67,27 +90,37 @@ export default function Home() {
           </div>
         </div>
       </section>
-      {isLoggedIn && (<section id="Books">
+      {loggedIn &&userData&& userData.role === "student" &&(
+         <section id="Books">
         <h4>Books</h4>
         <h1>Popular Books</h1>
         <div id="cards__wrapper">
-
-          {popBooks.map((book, index) => (
-            <Card
-              key={index}
-              ID_livre={book.ID_livre}
-              titre={book.titre}
-              auteur={book.auteur}
-              ISBN={book.ISBN}
-              theme={book.theme}
-              estDisponible={book.estDisponible}
-              description={book.description}
-            />
+          {books.map((book) => (
+            <li key={book.ID_livre}>
+              <Card book={book} />
+            </li>
           ))}
         </div>
-      </section>)}
-
+      </section>
+      )}
+     
       <Footer />
     </>
   );
 }
+const Card = ({ book }) => {
+  return (
+    <div className="book-card">
+      <h4>{book.titre}</h4>
+      <p>
+        <strong>by</strong> {book.auteur}
+      </p>
+      <p>
+        <strong>ISBN:</strong> {book.ISBN}
+      </p>
+      <p>
+        <strong>Theme:</strong> {book.theme}
+      </p>
+    </div>
+  );
+};

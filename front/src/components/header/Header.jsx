@@ -1,13 +1,14 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "./Header.css";
 import Navbar from "../navbar/Navbar";
 import { Link, useNavigate } from "react-router-dom";
 import TrackVisibility from "react-on-screen";
+import AuthContext from "../../context/AuthContext";
 
 export default function Header() {
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
-  const isLoggedIn = !!token;
+  const { loggedIn } = useContext(AuthContext);
+
 
   const [loopNum, setLoopNum] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -83,7 +84,7 @@ export default function Header() {
           </TrackVisibility>
           <br /><br /><br />
           {
-            !isLoggedIn && (  <Link to="/SignUp" id="btn">
+            !loggedIn && (  <Link to="/SignUp" id="btn">
             Get started
           </Link>)
           }

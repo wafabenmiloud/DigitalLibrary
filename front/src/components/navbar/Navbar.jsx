@@ -1,17 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useRef } from "react";
 import './Navbar.css';
 import { AiOutlineMenu } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
 import logo from "../../assets/logo.png";
-import axios from "axios";
 import { IoIosLogOut } from "react-icons/io";
+import AuthContext from "../../context/AuthContext";
 
 export default function Navbar() {
   const navRef = useRef();
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
-  const isLoggedIn = !!token;
+  const { loggedIn, userData } = useContext(AuthContext);
+
 
   const showNavbar = () => {
     navRef.current.classList.toggle("responsive_nav");
@@ -49,24 +49,6 @@ export default function Navbar() {
       </div>
     );
   }
-  const [userData, setUserData] = useState(null);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      axios.get('http://localhost/DigitalLibrary/back/user/userData.php', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-        .then(response => {
-          setUserData(response.data);
-        })
-        .catch(error => {
-          console.error("There was an error!", error);
-        });
-    }
-  }, [isLoggedIn, token]);
-
   return (
     <>
       <nav ref={navRef}>
@@ -87,7 +69,7 @@ export default function Navbar() {
                 About
               </Link>
             </li>
-            {isLoggedIn && (
+            {loggedIn &&userData&& userData.role === "student" &&(
               <>
                 <li>
                   <Link className="navbar__link" to="/books">
@@ -101,7 +83,7 @@ export default function Navbar() {
                 </li>
               </>
             )}
-            {!isLoggedIn ? (
+            {!loggedIn ? (
               <li>
                 <Link to="/SignIn" className="btn">
                   Login
@@ -109,8 +91,8 @@ export default function Navbar() {
               </li>
             ) : (
               <>  <li>
+              
                 <Link to="/dashboard">{userData && <Avatar size={35} name={userData.username} />}</Link>
-
               </li>
                 <li style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                   <IoIosLogOut onClick={handleLogout} className="btn_logout" />
