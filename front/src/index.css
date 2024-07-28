@@ -37,6 +37,24 @@ code {
 
 }
 button, a{cursor: pointer;}
+.button-enabled {
+  color: white;
+   background-color: var(--color-accent);
+   padding: 10px 40px;
+   cursor: pointer;
+}
+.button-disabled {
+  background-color: #ccc; /* Gray */
+  color: #666;
+  cursor: not-allowed;
+  padding: 10px 40px;
+
+}
+.button-alert {
+  background-color: red; /* Gray */
+  color: #fff;
+  padding: 10px 40px;
+}
 /*===========media queries (medium devices : tablets)=======*/
 @media screen and (max-width:1024px) {
    

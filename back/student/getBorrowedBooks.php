@@ -4,7 +4,8 @@ include '../config/db.php';
 include '../config/request_config.php';
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\Key;
-
+include '../config/config.php';
+$secretKey = JWT_SECRET;
 // Check if Authorization header is set
 $headers = apache_request_headers();
 
@@ -22,10 +23,15 @@ if (!$jwt) {
     echo json_encode(["error" => "Token not found"]);
     exit();
 }
-
-$sql = "SELECT books.*, users.*
-        FROM books 
-        LEFT JOIN users ON books.borrower_id = users.id";
+try {
+    $decoded = JWT::decode($jwt, new Key($secretKey, 'HS256'));
+    $userId = $decoded->id;
+} catch (Exception $e) {
+    http_response_code(401); // Unauthorized
+    echo json_encode(["error" => "Invalid token"]);
+    exit();
+}
+$sql = "SELECT * FROM books where borrower_id = $userId";
 $result = $conn->query($sql);
 
 $books = array();

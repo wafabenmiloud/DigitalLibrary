@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./Books.css";
+import Footer from "../../components/footer/Footer";
+import Navbar from "../../components/navbar/Navbar";
+import Card2 from "./Card2";
 
-import './Books.css';
-import Footer from "../../components/footer/Footer"
-import Navbar from '../../components/navbar/Navbar';
-
-const SearchBar = ({ searchQuery, setSearchQuery, theme, setTheme, themes }) => {
+const SearchBar = ({
+  searchQuery,
+  setSearchQuery,
+  theme,
+  setTheme,
+  themes,
+}) => {
   return (
     <div className="search-bar">
       <input
@@ -28,51 +33,58 @@ const SearchBar = ({ searchQuery, setSearchQuery, theme, setTheme, themes }) => 
 };
 export default function Books() {
   const [books, setBooks] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const token = localStorage.getItem("token");
-  const navigate = useNavigate();
+  const fetchBooks = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost/DigitalLibrary/back/user/getBooks.php",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setBooks(response.data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
 
   useEffect(() => {
-    if (!token) {
-      navigate("/SignIn");
-      return;
-    }
-
-    const fetchBooks = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost/DigitalLibrary/back/user/getBooks.php",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        setBooks(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-        setLoading(false);
-      }
-    };
-
     fetchBooks();
-  }, [token, navigate]);
+  }, []);
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [theme, setTheme] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [theme, setTheme] = useState("");
   const themes = [...new Set(books.map((book) => book.theme))];
 
   const filteredBooks = books.filter((book) => {
-    const matchesSearchQuery =
-      book.ISBN.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearchQuery = book.ISBN.toLowerCase().includes(
+      searchQuery.toLowerCase()
+    );
     const matchesTheme = theme ? book.theme === theme : true;
     return matchesSearchQuery && matchesTheme;
   });
 
+  const borrowBook = async (bookId) => {
+    try {
+      await axios.post(
+        "http://localhost/DigitalLibrary/back/student/borrowBook.php",
+        new URLSearchParams({ id: bookId }),
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      fetchBooks();
+    } catch (error) {
+      console.error("An error occurred while borrowing the book:", error);
+    }
+  };
   return (
     <>
       <Navbar />
-      <h1 id='titre'>Books</h1> 
+      <h1 id="titre">Books</h1>
 
       <SearchBar
         searchQuery={searchQuery}
@@ -81,27 +93,15 @@ export default function Books() {
         setTheme={setTheme}
         themes={themes}
       />
-      
+
       <div id="cards__wrapper">
-       {filteredBooks.map((book) => (
-            <li key={book.ID_livre}>
-              <Card book={book}/>
-            </li>
-          ))}
+        {filteredBooks.map((book) => (
+          <li key={book.ID_livre}>
+            <Card2 book={book} onBorrow={() => borrowBook(book.ID_livre)} />
+          </li>
+        ))}
       </div>
       <Footer />
     </>
-  )
-}
-const Card = ({ book }) => {
-  return (
-    <div className="book-card">
-      <h4>{book.titre}</h4>
-      <p><strong>by</strong> {book.auteur}</p>
-      <p><strong>ISBN:</strong> {book.ISBN}</p>
-      <p><strong>Theme:</strong> {book.theme}</p>
-      <p><strong>Availability:</strong> {book.estDisponible ? 'Yes' : 'No'}</p>
-    
-    </div>
   );
-};
+}

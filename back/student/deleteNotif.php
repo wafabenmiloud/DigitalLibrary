@@ -4,7 +4,8 @@ include '../config/db.php';
 include '../config/request_config.php';
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\Key;
-
+include '../config/config.php';
+$secretKey = JWT_SECRET;
 // Check if Authorization header is set
 $headers = apache_request_headers();
 
@@ -23,22 +24,24 @@ if (!$jwt) {
     exit();
 }
 
-$sql = "SELECT books.*, users.*
-        FROM books 
-        LEFT JOIN users ON books.borrower_id = users.id";
-$result = $conn->query($sql);
-
-$books = array();
-
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        $books[] = $row;
-    }
+if (!isset($_POST['id'])) {
+    http_response_code(400); // Bad request
+    echo json_encode(["error" => "notification ID is required"]);
+    exit();
 }
 
-$conn->close();
+$id = $_POST['id'];
 
-// Set the content type to JSON
-header('Content-Type: application/json');
-echo json_encode($books);
+$stmt = $conn->prepare("DELETE FROM notifications WHERE id = ?");
+$stmt->bind_param("i", $id);
+
+if ($stmt->execute()) {
+    echo json_encode(["message" => "notification deleted successfully"]);
+} else {
+    http_response_code(500); // Internal server error
+    echo json_encode(["error" => "Error deleting notification: " . $stmt->error]);
+}
+
+$stmt->close();
+$conn->close();
 ?>

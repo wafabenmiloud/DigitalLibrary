@@ -54,27 +54,33 @@ try {
     exit();
 }
 
-if (!isset($_POST['titre'], $_POST['auteur'], $_POST['ISBN'], $_POST['theme'])) {
+if (!isset($_POST['id']) || !isset($_POST['bookRef']) ) {
     http_response_code(400); // Bad request
-    echo json_encode(["error" => "All fields are required"]);
+    echo json_encode(["error" => "borrower ID is required"]);
     exit();
 }
-$title = $_POST['titre'];
-$author = $_POST['auteur'];
-$refe = $_POST['ISBN'];
-$theme = $_POST['theme'];
-$estDispo = true;
-$sql = "INSERT INTO books (titre, auteur, ISBN, theme, estDisponible) VALUES ('$title', '$author', '$refe', '$theme', $estDispo)";
 
-if ($conn->query($sql) === TRUE) {
-    echo json_encode(["message" => "New record created successfully"]);
+$id = $_POST['id'];
+$bookRef = $_POST['bookRef'];
+
+
+$description = "The book with reference $bookRef has been borrowed for over 10 days. Please return it promptly to adhere to the specified borrowing period.";
+$notificationSql = "INSERT INTO notifications (receiver_id, description) VALUES (?, ?)";
+
+if ($stmt = $conn->prepare($notificationSql)) {
+    $stmt->bind_param("is", $id, $description);
+
+    if ($stmt->execute()) {
+        echo json_encode(["message" => "Notification added successfully"]);
+    } else {
+        http_response_code(500); // Internal server error
+        echo json_encode(["error" => "Error adding notification: " . $stmt->error]);
+    }
+
+    $stmt->close();
 } else {
     http_response_code(500); // Internal server error
-    echo json_encode(["error" => "Error creating record: " . $conn->error]);
+    echo json_encode(["error" => "Error preparing statement: " . $conn->error]);
 }
 $conn->close();
-
-// Set the content type to JSON
-header('Content-Type: application/json');
-echo json_encode($books);
 ?>

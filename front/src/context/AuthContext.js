@@ -4,12 +4,14 @@ import React, { createContext, useEffect, useState } from "react";
 const AuthContext = createContext();
 
 function AuthContextProvider(props) {
-  const token = localStorage.getItem('token');
-  const isLoggedIn = !!token;
-  const [loggedIn, setLoggedIn] = useState(isLoggedIn);
+  const [loggedIn, setLoggedIn] = useState(!!localStorage.getItem('token'));
   const [userData, setUserData] = useState(null);
 
   async function getLoggedIn() {
+    const token = localStorage.getItem('token');
+    const isLoggedIn = !!token;
+    setLoggedIn(isLoggedIn);
+
     if (isLoggedIn) {
       try {
         const response = await axios.get('http://localhost/DigitalLibrary/back/user/userData.php', {
@@ -33,7 +35,7 @@ function AuthContextProvider(props) {
 
   useEffect(() => {
     getLoggedIn();
-  }, [isLoggedIn, token]);
+  }, []);
 
   return (
     <AuthContext.Provider value={{ loggedIn, getLoggedIn, userData }}>

@@ -4,6 +4,10 @@ require '../vendor/autoload.php';
 include '../config/db.php';
 include '../config/request_config.php';
 use \Firebase\JWT\JWT;
+use \Firebase\JWT\KEY;
+
+include '../config/config.php';
+$secretKey = JWT_SECRET;
 
 // Check if all required fields are present
 if (!isset($_POST['email'], $_POST['password'])) {
@@ -24,13 +28,13 @@ if ($result->num_rows > 0) {
     if (password_verify($password, $row['password'])) {
         // Generate JWT token
         $token_payload = array(
+            "id" => $row['id'],
             "card_num" => $row['card_num'],
             "username" => $row['username'],
             "email" => $email,
             "iat" => time(),
             "exp" => time() + (60 * 60) // 1 hour expiration
         );
-        $secretKey = "691fd222cc84f449745a9e72cbc00fea99f69b2bf69356a2e08a3531c1eb5f08"; 
         $token = JWT::encode($token_payload, $secretKey, 'HS256');
         echo json_encode(["message" => "Login successful", "token" => $token]);
     } else {

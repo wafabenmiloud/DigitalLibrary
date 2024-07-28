@@ -1,20 +1,16 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
 import "./Home.css";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import about from "../../assets/about.jpg";
 import AuthContext from "../../context/AuthContext";
-
+import Card2 from "../books/Card2";
 
 export default function Home() {
   const token = localStorage.getItem("token");
   const [books, setBooks] = useState([]);
-  const navigate = useNavigate();
   const { loggedIn, userData } = useContext(AuthContext);
-
 
   function getRandomRecords(array, numRecords) {
     const arrayCopy = array.slice();
@@ -24,30 +20,40 @@ export default function Home() {
     }
     return arrayCopy.slice(0, numRecords);
   }
-
-  useEffect(() => {
-    if (!token) {
-      navigate("/SignIn");
-      return;
+  const fetchBooks = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost/DigitalLibrary/back/user/getBooks.php",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      const popBooks = getRandomRecords(response.data, 6);
+      setBooks(popBooks);
+    } catch (error) {
+      console.error("Error fetching users:", error);
     }
-   
-    const fetchBooks = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost/DigitalLibrary/back/user/getBooks.php",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        const popBooks = getRandomRecords(response.data, 3);
-        setBooks(popBooks);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
-
+  };
+  useEffect(() => {
     fetchBooks();
-  }, [token, navigate]);
+  }, []);
+  const borrowBook = async (bookId) => {
+    try {
+      await axios.post(
+        "http://localhost/DigitalLibrary/back/student/borrowBook.php",
+        new URLSearchParams({ id: bookId }),
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      fetchBooks();
+
+    } catch (error) {
+      console.error("An error occurred while borrowing the book:", error);
+    }
+  };
   return (
     <>
       <Header />
@@ -90,37 +96,21 @@ export default function Home() {
           </div>
         </div>
       </section>
-      {loggedIn &&userData&& userData.role === "student" &&(
-         <section id="Books">
-        <h4>Books</h4>
-        <h1>Popular Books</h1>
-        <div id="cards__wrapper">
-          {books.map((book) => (
-            <li key={book.ID_livre}>
-              <Card book={book} />
-            </li>
-          ))}
-        </div>
-      </section>
+      {loggedIn && userData && userData.role === "student" && (
+        <section id="Books">
+          <h4>Books</h4>
+          <h1>Popular Books</h1>
+          <div id="cards__wrapper">
+            {books.map((book) => (
+              <li key={book.ID_livre}>
+                <Card2 book={book} onBorrow={() => borrowBook(book.ID_livre)} />
+              </li>
+            ))}
+          </div>
+        </section>
       )}
-     
+
       <Footer />
     </>
   );
 }
-const Card = ({ book }) => {
-  return (
-    <div className="book-card">
-      <h4>{book.titre}</h4>
-      <p>
-        <strong>by</strong> {book.auteur}
-      </p>
-      <p>
-        <strong>ISBN:</strong> {book.ISBN}
-      </p>
-      <p>
-        <strong>Theme:</strong> {book.theme}
-      </p>
-    </div>
-  );
-};

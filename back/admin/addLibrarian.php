@@ -1,6 +1,7 @@
 <?php
 require '../vendor/autoload.php';
 include '../config/db.php';
+include '../config/config.php';
 include '../config/request_config.php';
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\Key;
@@ -24,7 +25,7 @@ if (!$jwt) {
 }
 
 try {
-    $secretKey = "691fd222cc84f449745a9e72cbc00fea99f69b2bf69356a2e08a3531c1eb5f08";
+    $secretKey = JWT_SECRET;
     $decoded = JWT::decode($jwt, new Key($secretKey, 'HS256'));
 
     if (!isset($decoded->email)) {

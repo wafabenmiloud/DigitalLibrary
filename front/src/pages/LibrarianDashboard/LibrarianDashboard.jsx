@@ -68,6 +68,22 @@ export default function LibrarianDashboard({ userData }) {
       console.error("An error occurred while deleting the nook:", error);
     }
   };
+  const NotifyUser = async (userId, bookRef) => {
+    try {
+      const response = await axios.post(
+        "http://localhost/DigitalLibrary/back/librarian/addNotif.php",
+        new URLSearchParams({ id: userId, bookRef:bookRef }),
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    
+    } catch (error) {
+      console.error("An error occurred while deleting the nook:", error);
+    }
+  };
   const addBook = async (bookData) => {
     try {
       const response = await axios.post(
@@ -124,7 +140,7 @@ export default function LibrarianDashboard({ userData }) {
           <h3>Books</h3>
           {books.map((book) => (
             <li key={book.ID_livre}>
-              <Card book={book} onDelete={() => deleteBook(book.ID_livre)}/>
+              <Card book={book} onDelete={() => deleteBook(book.ID_livre)} onNotif={() => NotifyUser(book.id, book.ISBN)}/>
             </li>
           ))}
           <IoMdAddCircle

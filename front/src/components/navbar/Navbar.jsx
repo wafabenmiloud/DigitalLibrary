@@ -10,7 +10,7 @@ import AuthContext from "../../context/AuthContext";
 export default function Navbar() {
   const navRef = useRef();
   const navigate = useNavigate();
-  const { loggedIn, userData } = useContext(AuthContext);
+  const { loggedIn, userData, getLoggedIn  } = useContext(AuthContext);
 
 
   const showNavbar = () => {
@@ -20,6 +20,7 @@ export default function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/');
+    getLoggedIn();
   };
 
   function Avatar(props) {

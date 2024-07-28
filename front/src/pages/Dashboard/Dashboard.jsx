@@ -8,7 +8,7 @@ import LibrarianDashboard from '../LibrarianDashboard/LibrarianDashboard';
 import AuthContext from '../../context/AuthContext';
 
 const Dashboard = () => {
-    const { loggedIn, userData } = useContext(AuthContext);
+    const { userData } = useContext(AuthContext);
 
     return (
         <>

@@ -10,9 +10,6 @@ import UpdateLibrarianPopup from "../../components/Popups/UpdateLibrarianPopup";
 
 export default function AdminDashboard({ userData }) {
   const [users, setUsers] = useState([]);
-
-
-  const [loading, setLoading] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
   const [showPopup2, setShowPopup2] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
@@ -23,11 +20,6 @@ export default function AdminDashboard({ userData }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!token) {
-      navigate('/SignIn'); // Redirect to login if no token
-      return;
-    }
-
     const fetchUsers = async () => {
       try {
         const response = await axios.get
@@ -35,10 +27,8 @@ export default function AdminDashboard({ userData }) {
             headers: { Authorization: `Bearer ${token}` }
           });
         setUsers(response.data);
-        setLoading(false);
       } catch (error) {
         console.error('Error fetching users:', error);
-        setLoading(false);
       }
     };
 
@@ -142,9 +132,7 @@ export default function AdminDashboard({ userData }) {
     setShowPopup2(false);
     setSelectedLibrarian(null);
   };
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+
   const students = users.filter(user => user.role === 'student');
   const librarians = users.filter(user => user.role === 'librarian');
   return (

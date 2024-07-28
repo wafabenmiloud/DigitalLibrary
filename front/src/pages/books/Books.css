@@ -8,16 +8,26 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
 }
+.book-card-borrowed {
+  position: relative;
+  border: 1px solid red;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 10px 0;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
 
-.book-card:hover {
+.book-card:hover, .book-card-borrowed:hover {
   transform: scale(1.02);
 }
 
-.book-card h4 {
+.book-card h3, .book-card-borrowed h3 {
   margin: 0 0 10px;
 }
 
-.book-card p {
+.book-card p , .book-card-borrowed p{
   margin: 5px 0;
 }
 
@@ -28,7 +38,7 @@
   cursor: pointer;
   color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background-color: var(--color-accent);
+  background-color: var(--color-primary);
   padding: 2px;
   border-radius: 100%;
 }

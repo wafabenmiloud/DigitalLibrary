@@ -6,6 +6,9 @@ include '../config/request_config.php';
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\KEY;
 
+include '../config/config.php';
+$secretKey = JWT_SECRET;
+
 $headers = apache_request_headers();
 
 if (!isset($headers['Authorization'])) {
@@ -23,7 +26,6 @@ if (!$jwt) {
     exit();
 }
 try {
-    $secretKey = "691fd222cc84f449745a9e72cbc00fea99f69b2bf69356a2e08a3531c1eb5f08"; // Change this to your actual secret key
     $decoded = JWT::decode($jwt, new Key($secretKey, 'HS256'));
     $email = $decoded->email;
 

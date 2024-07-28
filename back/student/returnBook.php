@@ -26,52 +26,46 @@ if (!$jwt) {
 
 try {
     $decoded = JWT::decode($jwt, new Key($secretKey, 'HS256'));
-
-    if (!isset($decoded->email)) {
-        http_response_code(400); // Bad request
-        echo json_encode(["error" => "Invalid token structure"]);
-        exit();
-    }
-
+    $userId = $decoded->id;
     $email = $decoded->email;
-
-    // Fetch the user's role from the database
-    $stmt = $conn->prepare("SELECT role FROM users WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $stmt->bind_result($role);
-    $stmt->fetch();
-    $stmt->close();
-
-    if ($role !== 'admin') {
-        http_response_code(403); // Forbidden
-        echo json_encode(["error" => "Access denied"]);
-        exit();
-    }
 } catch (Exception $e) {
     http_response_code(401); // Unauthorized
     echo json_encode(["error" => "Invalid token"]);
     exit();
 }
 
+// Check if book ID is set
 if (!isset($_POST['id'])) {
     http_response_code(400); // Bad request
-    echo json_encode(["error" => "User ID is required"]);
+    echo json_encode(["error" => "book ID is required"]);
     exit();
 }
 
 $id = $_POST['id'];
 
-$stmt = $conn->prepare("DELETE FROM users WHERE id = ?");
-$stmt->bind_param("i", $id);
+$borrowingDate = date('Y-m-d');
+$returnDate = date('Y-m-d', strtotime($borrowingDate. ' + 10 days'));
 
-if ($stmt->execute()) {
-    echo json_encode(["message" => "User deleted successfully"]);
+$sql = "UPDATE books SET estDisponible = 1, borrower_id = NULL, borrowing_date = NULL, return_date = NULL WHERE ID_livre = ?";
+
+if ($stmt = $conn->prepare($sql)) {
+    $stmt->bind_param("i", $id);
+    
+    if ($stmt->execute()) {
+        http_response_code(200); // OK
+        echo json_encode(["message" => "Book returned successfully"]);
+    } else {
+        http_response_code(500);
+        echo json_encode(["error" => "Failed to return book"]);
+    }
+    
+    $stmt->close();
 } else {
-    http_response_code(500); // Internal server error
-    echo json_encode(["error" => "Error deleting user: " . $stmt->error]);
+    http_response_code(500);
+    echo json_encode(["error" => "Failed to prepare statement"]);
 }
 
-$stmt->close();
 $conn->close();
+
+
 ?>
